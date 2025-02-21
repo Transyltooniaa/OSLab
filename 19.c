@@ -3,25 +3,26 @@
 #include <unistd.h>
 #include <signal.h>
 
-// Signal handler function for SIGTSTP (Ctrl-Z)
+// Signal handler for SIGTSTP (Ctrl+Z)
 void stop_handler(int sig) {
-    printf("Process stopped. Press Enter to resume...\n");
+    printf("\nProcess stopped. Press Enter to resume...\n");
     fflush(stdout);
+    
+    // Wait for Enter key
+    getchar();  
+    printf("Resuming process...\n");
 }
 
 int main() {
-    printf("Process running...\n");
+    printf("Process running... Press Ctrl+Z to stop.\n");
 
-    // Register signal handler for SIGTSTP (Ctrl-Z)
+    // Register signal handler for SIGTSTP (Ctrl+Z)
     signal(SIGTSTP, stop_handler);
 
-    // Infinite loop to simulate the process running
+    // Infinite loop to simulate process execution
     while (1) {
-        // Sleeping state
         printf("Process sleeping...\n");
-        sleep(5); // Sleep for 5 seconds
-        
-        // Back to running state
+        sleep(5);
         printf("Process resumed...\n");
     }
 

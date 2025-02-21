@@ -1,26 +1,35 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
 int main() {
-    pid_t pid = fork();
+    pid_t pid = fork();  // Create a child process
 
     if (pid == -1) {
-        // Fork failed
-        perror("fork");
-        return 1;
-    } else if (pid == 0) {
+        perror("fork");  // Fork failed
+        exit(EXIT_FAILURE);
+    } 
+    else if (pid == 0) {  
         // Child process
-        printf("Child process: PID = %d\n", getpid());
-    } else {
+        printf("Child Process: PID = %d, Parent PID = %d\n", getpid(), getppid());
+        fflush(stdout);  // Ensure output is printed before exit
+        exit(EXIT_SUCCESS);  // Exit successfully
+    } 
+    else {  
         // Parent process
-        printf("Parent process: PID = %d\n", getpid());
-        printf("Parent created child process with PID = %d\n", pid);
+        printf("Parent Process: PID = %d, Created Child PID = %d\n", getpid(), pid);
+        fflush(stdout);
 
-        // Wait for the child process to finish
-        wait(NULL);
-        printf("Child process has terminated\n");
+        int status;
+        waitpid(pid, &status, 0);  // Wait for the child process
+
+        if (WIFEXITED(status)) {
+            printf("Child PID %d exited with status %d\n", pid, WEXITSTATUS(status));
+        } else {
+            printf("Child PID %d terminated abnormally\n", pid);
+        }
     }
 
     return 0;

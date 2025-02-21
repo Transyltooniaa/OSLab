@@ -1,0 +1,4 @@
+Written using original FD
+Written using dup FD
+Written using dup2 FD
+Written using fcntl FD

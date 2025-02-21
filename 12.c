@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <limits.h> // for PATH_MAX
 #include <string.h> // for strcat
+#include <errno.h>   // For errno
+
 
 void get_opening_mode(int fd) {
     int flags = fcntl(fd, F_GETFL);
@@ -37,16 +39,18 @@ int main() {
 
     int fd = open(full_path, O_RDONLY);
     if (fd == -1) {
-        perror("open");
+        fprintf(stderr, "Error opening file '%s': %s\n", full_path, strerror(errno));
         exit(EXIT_FAILURE);
     }
 
+    printf("File '%s' opened successfully.\n", full_path);
     get_opening_mode(fd);
 
     if (close(fd) == -1) {
-        perror("close");
+        fprintf(stderr, "Error closing file '%s': %s\n", full_path, strerror(errno));
         exit(EXIT_FAILURE);
     }
 
+    printf("File closed successfully.\n");
     return 0;
 }

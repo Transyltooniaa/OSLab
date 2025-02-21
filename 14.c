@@ -7,6 +7,7 @@ void identify_file_type(const char *filename) {
     struct stat st;
 
     // Check if file exists
+    // stat() stands for "status" and is used to get information about a file,
     if (stat(filename, &st) == -1) {
         perror("stat");
         exit(EXIT_FAILURE);

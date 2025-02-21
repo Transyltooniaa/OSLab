@@ -7,6 +7,7 @@ int main() {
     FILE *file;
     char filename[100];
     char line[MAX_LINE_LENGTH];
+    // MAX_LINE_LENGTH is the maximum length of a line in the file (1024 characters) 
 
     // Get the file name from the user
     printf("Enter the file name: ");
