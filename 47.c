@@ -14,7 +14,7 @@ int main() {
     char *shmaddr;
 
     // Generate a key for the shared memory segment
-    if ((key = ftok("/tmp", 'A')) == -1) {
+    if ((key = ftok("0", '65')) == -1) {
         perror("ftok");
         exit(EXIT_FAILURE);
     }
