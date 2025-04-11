@@ -20,18 +20,26 @@ int main() {
     }
 
     // Create a shared memory segment
+    // 0666 is the permission mode
+    // SHM_SIZE = shared memory segment size in bytes
     if ((shmid = shmget(key, SHM_SIZE, IPC_CREAT | 0666)) == -1) {
         perror("shmget");
         exit(EXIT_FAILURE);
     }
 
     // Attach the shared memory segment
+    
+    // “Let the operating system choose the address where to attach this shared memory.”
+    // This is the recommended and safest way to use shmat() unless you have a very specific reason to manually manage memory layout (which is rare and advanced).
+    // 0 means read-write
+    // void *custom_addr = (void *)0x5000000;
     if ((shmaddr = shmat(shmid, NULL, 0)) == (char *) -1) {
         perror("shmat");
         exit(EXIT_FAILURE);
     }
 
     // Write some data to the shared memory
+    // SHM_SIZE = shared memory segment size in bytes
     strncpy(shmaddr, "Hello, shared memory!", SHM_SIZE);
 
     // Attach with O_RDONLY and check if overwriting is possible
